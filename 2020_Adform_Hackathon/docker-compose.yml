@@ -1,0 +1,26 @@
+version: '3'
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.conf:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "80:3000"
+    volumes:
+      - ./dashboards/:/etc/grafana/provisioning/dashboards
+      - ./datasource.yml:/etc/grafana/provisioning/datasource/datasource.yml
+  prophet:
+    image: quay.io/aicoe/prometheus-anomaly-detector:latest
+    ports:
+      - "8080:8080"
+    environment:
+      FLT_PROM_URL: http://demo.robustperception.io:9090
+      FLT_RETRAINING_INTERVAL_MINUTES: 15
+      FLT_METRICS_LIST: node_memory_Active_file_bytes
+      APP_FILE: app.py
+      FLT_DATA_START_TIME: 3d
+      FLT_ROLLING_TRAINING_WINDOW_SIZE: 15d
