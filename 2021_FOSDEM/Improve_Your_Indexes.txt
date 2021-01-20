@@ -1,0 +1,72 @@
+docker pull postgres
+
+docker run -d -ti --name FOSDEM_PG -e "POSTGRES_HOST_AUTH_METHOD=trust"  postgres
+
+docker exec -ti FOSDEM_PG bash
+
+root@xxxxx:/# su - postgres -c psql
+
+postgres=# create database FOSDEM21;
+
+postgres=#\c fosdem21
+fosdem21=# CREATE TABLE test AS (SELECT random() x, random() y FROM generate_series(1,1483242));
+
+fosdem21=#  select * from pg_stat_user_tables where relname='test';
+
+fosdem21=# EXPLAIN ANALYZE SELECT * FROM test WHERE x + y < 0.01;
+
+fosdem21=# SELECT count(*) FROM test WHERE x + y < 0.01;
+
+fosdem21=# CREATE INDEX test_idx ON test ((x + y));
+
+fosdem21=# ANALYZE test;
+
+fosdem21=# EXPLAIN ANALYZE SELECT * FROM test WHERE x + y < 0.01;
+
+fosdem21=# show default_statistics_target;
+
+fosdem21=# select * from pg_settings where name='default_statistics_target';
+
+fosdem21=# SELECT * FROM pg_stats WHERE tablename = 'test_idx';
+
+fosdem21=# set default_statistics_target=1;
+
+fosdem21=# SELECT * FROM pg_stats WHERE tablename = 'test_idx';
+
+fosdem21=# ALTER TABLE test ALTER x SET STATISTICS 5000;
+
+fosdem21=# \d+ test
+
+fosdem21=# ALTER TABLE test ALTER y SET STATISTICS 4000;
+
+fosdem21=# \d+ test
+
+fosdem21=# ALTER INDEX test_idx ALTER COLUMN expr SET STATISTICS 10000;
+
+fosdem21=# \d+ test_idx
+
+fosdem21=# EXPLAIN ANALYZE SELECT * FROM test WHERE x + y < 0.01;
+
+fosdem21=# select * from pg_settings where name like 'autovacuum_%threshold';
+
+fosdem21=# select * from pg_settings where name like 'autovacuum_%factor';
+
+fosdem21=# select * from pg_stat_user_tables ;
+
+fosdem21=# select pg_stat_reset(); 
+
+fosdem21=# select * from pg_stat_user_tables ;
+
+fosdem21=# analyze test;
+
+fosdem21=# select * from pg_stat_user_tables ;
+
+fosdem21=# ALTER TABLE test SET (autovacuum_vacuum_scale_factor = 0, autovacuum_vacuum_threshold = 100);
+
+fosdem21=# \d+ test
+
+fosdem21=# CREATE STATISTICS s1 (dependencies) ON x, y FROM test;
+
+fosdem21=# CREATE STATISTICS s2 (mcv) ON x, y FROM test;
+
+fosdem21=# CREATE STATISTICS s3 (ndistinct) ON x, y FROM test;
