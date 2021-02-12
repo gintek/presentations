@@ -15,7 +15,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "panels": [
     {
@@ -23,7 +22,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus-1",
+      "datasource": "robustperception",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -56,7 +55,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.3.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -92,7 +91,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:410",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -101,7 +99,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:411",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -120,7 +117,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -153,7 +150,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.3.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -189,7 +186,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:312",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -198,7 +194,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:313",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -217,7 +212,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -266,31 +261,27 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.3.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:471",
           "alias": "yhat_upper",
           "color": "#56A64B",
           "fillBelowTo": "yhat_lower",
           "lines": false
         },
         {
-          "$$hashKey": "object:501",
           "alias": "yhat_lower",
           "lines": false
         },
         {
-          "$$hashKey": "object:512",
           "alias": "yhat",
           "fill": 0,
           "linewidth": 2
         },
         {
-          "$$hashKey": "object:265",
           "alias": "anomaly",
           "color": "#37872D",
           "linewidth": 5,
@@ -302,7 +293,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", instance=\"10.2.28.62:8080\", job=\"prometheus\", value_type=\"yhat_lower\"}",
+          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", job=\"prometheus\", value_type=\"yhat_lower\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -310,7 +301,7 @@
           "refId": "A"
         },
         {
-          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", instance=\"10.2.28.62:8080\", job=\"prometheus\", value_type=\"yhat_upper\"}",
+          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", job=\"prometheus\", value_type=\"yhat_upper\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -318,14 +309,14 @@
           "refId": "C"
         },
         {
-          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", instance=\"10.2.28.62:8080\", job=\"prometheus\", value_type=\"yhat\"}",
+          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", job=\"prometheus\", value_type=\"yhat\"}",
           "hide": false,
           "interval": "",
           "legendFormat": "{{ value_type }}",
           "refId": "B"
         },
         {
-          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", instance=\"10.2.28.62:8080\", job=\"prometheus\", value_type=\"anomaly\"}",
+          "expr": "node_memory_Active_file_bytes_prophet{exported_instance=\"demo.robustperception.io:9100\", exported_job=\"node\", job=\"prometheus\", value_type=\"anomaly\"}",
           "hide": true,
           "instant": false,
           "interval": "",
@@ -335,7 +326,6 @@
       ],
       "thresholds": [
         {
-          "$$hashKey": "object:207",
           "colorMode": "critical",
           "fill": true,
           "line": true,
@@ -362,7 +352,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:186",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -371,7 +360,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:187",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -388,18 +376,18 @@
   ],
   "refresh": false,
   "schemaVersion": 26,
-  "style": "dark",
+  "style": "light",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Prophet",
   "uid": "RohBS8JGz",
-  "version": 22
+  "version": 1
 }

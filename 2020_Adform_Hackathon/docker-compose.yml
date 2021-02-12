@@ -12,7 +12,8 @@ services:
       - "80:3000"
     volumes:
       - ./dashboards/:/etc/grafana/provisioning/dashboards
-      - ./datasource.yml:/etc/grafana/provisioning/datasource/datasource.yml
+      - ./datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./grafana.ini:/etc/grafana/grafana.ini
   prophet:
     image: quay.io/aicoe/prometheus-anomaly-detector:latest
     ports:
