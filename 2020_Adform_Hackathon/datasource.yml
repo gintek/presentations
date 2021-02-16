@@ -1,0 +1,11 @@
+apiVersion: 1
+
+datasources:
+  - name: prometheus
+    type: prometheus
+    access: server
+    url: http://2020_adform_hackathon_prometheus_1:9090
+  - name: robustperception
+    type: prometheus
+    access: server
+    url: http://demo.robustperception.io:9090
