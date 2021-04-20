@@ -1,0 +1,108 @@
+
+1. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --list
+
+2. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --create -topic vptech --partitions 1 --replication-factor 1
+
+3. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --list
+
+4. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --describe
+
+5. kafka-console-producer.sh --broker-list localhost:9092 --topic vptech
+
+   kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic vptech --from-beginning
+
+6. cd /kafka/kafka-logs*/
+
+7. kafka-run-class.sh kafka.tools.DumpLogSegments --print-data-log --deep-iteration --files 00000000000000000000.log
+   date -d @wartosc 
+
+8. kafka-producer-perf-test.sh --print-metrics  --topic vptech --num-records 1000000 --record-size 100 --throughput 15000000 --producer-props acks=1 bootstrap.servers=localhost:9092 buffer.memory=67108864 compression.type=none batch.size=8196
+
+9. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --alter --topic vptech --partitions 9
+Skalowanie do góry nigdy w dół
+
+10.kafka-producer-perf-test.sh --print-metrics  --topic vptech --num-records 1000000 --record-size 100 --throughput 15000000 --producer-props acks=1 bootstrap.servers=localhost:9092 buffer.memory=67108864 compression.type=none batch.size=8196
+
+11. docker-compose up --scale kafka=2 -d
+
+    echo dump| nc 2021_vptech_kafka_two_approaches_zookeeper_1 2181
+
+12. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --create -topic vptech-2 --partitions 1 --replication-factor 2
+
+13. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --describe --topic vptech-2
+
+14. docker kill 2021_vptech_kafka_two_approaches_kafka_2
+
+15. kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --describe --topic vptech-2
+
+    echo dump| nc 2021_vptech_kafka_two_approaches_zookeeper_1 2181
+
+16. docker start 2021_vptech_kafka_two_approaches_kafka_2
+
+    kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --describe --topic vptech-2
+
+####DELETE TOPICS 
+
+{
+  "partitions": [
+    {
+      "topic": "deletemsg",
+      "partition": 0,
+      "offset": 3
+    }
+  ],
+  "version": 1
+}
+
+kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --create -topic deletemsg --partitions 1 --replication-factor 1
+
+kafka-console-producer.sh --broker-list localhost:9092 --topic deletemsg
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic deletemsg --from-beginning
+
+kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic deletemsg
+
+vi offset-json.json
+
+kafka-delete-records.sh --bootstrap-server localhost:9092 --offset-json-file offset-json.json
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic deletemsg --from-beginning
+
+#####RETENTION
+
+kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --describe --topic vptech-2
+
+kafka-configs.sh  --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1    --entity-type topics --entity-name test --alter --add-config retention.ms=128000
+
+kafka-topics.sh --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1 --describe --topic vptech-2
+
+kafka-configs.sh  --zookeeper 2021_vptech_kafka_two_approaches_zookeeper_1    --entity-type topics --entity-name test --alter --add-config retention.bytes=128000
+
+
+### KIP-500
+echo dump| nc 2021_vptech_kafka_two_approaches_zookeeper_1 2181
+
+
+
+#Compaction
+
+kafka-topics.sh --create --zookeeper zookeeper:2181 --topic latest-value --replication-factor 1 --partitions 1 --config "cleanup.policy=compact" --config "delete.retention.ms=100" --config "segment.ms=100" --config "min.cleanable.dirty.ratio=0.01"
+
+kafka-console-producer.sh --broker-list localhost:9092 --topic latest-value --property parse.key=true --property key.separator=:
+
+>klucz1:10
+>klucz1:20
+>klucz2:5
+>klucz3:6
+klucz1:40
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic latest-value --property  print.key=true --property key.separator=: --from-beginning
+
+
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic latest-value --property  print.key=true --property key.separator=: --from-beginning
+
+
+
+
+
+
